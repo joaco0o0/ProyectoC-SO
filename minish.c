@@ -1,31 +1,23 @@
+#include "minish.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "builtin.h"
-
-#define MAXLINE 1024
-#define MAXARGS 128
-
+extern char **environ;
+int status = 0;
 int main() {
-    char linea[MAXLINE];
-    char *argv[MAXARGS];
-    int argc;
+    char line[MAX_INPUT];
+    char *args[MAX_ARGS];
 
-    while (1) {
-        fprintf(stderr, "minibash> ");  // Prompt
-        if (fgets(linea, MAXLINE, stdin) == NULL) {
-            break;  // EOF
+    // Ciclo principal del shell
+    do {
+        printf("minish> "); // Prompt del shell
+        if (fgets(line, sizeof(line), stdin) == NULL) {
+            perror("fgets");
+            exit(EXIT_FAILURE);
         }
 
-        argc = linea2argv(linea, MAXARGS, argv);
-        if (argc > 0) {
-            ejecutar(argc, argv);
-        }
+        read_command(line); // Ajusta la línea de entrada eliminando el carácter de nueva línea
+        linea2argv(line, args); // Convierte la línea de entrada en una lista de argumentos
+        status = execute_command(args); // Ejecuta el comando ingresado por el usuario
+    } while (status == 0);
 
-        for (int i = 0; i < argc; i++) {
-            free(argv[i]);
-        }
-    }
-    return 0;
+    return status;
 }

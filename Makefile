@@ -1,3 +1,4 @@
+# Definición de los archivos fuente y de encabezado
 CFILES   = $(wildcard *.c)
 HFILES   = $(wildcard *.h)
 OBJFILES = $(CFILES:.c=.o)
@@ -5,18 +6,18 @@ DEPS     = $(CFILES:.c=.d)
 OUT      = minish
 CFLAGS   = -Wall -Wextra -std=gnu99 -ggdb
 
-# Rule to generate the executable
+# Regla para generar el ejecutable
 $(OUT): $(OBJFILES)
-        $(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^
 
-# Include dependency files
+# Incluir archivos de dependencias
 -include $(DEPS)
 
-# Rule to compile .c to .o and generate .d files
+# Regla para compilar .c a .o y generar archivos .d
 %.o: %.c
-        $(CC) $(CFLAGS) -MMD -MP -c $< -o $@
+	$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
 
-# Clean rule
+# Regla para limpiar
 .PHONY: clean
 clean:
-        rm -f $(OBJFILES) $(OUT) $(DEPS)
+	rm -f $(OBJFILES) $(OUT) $(DEPS)

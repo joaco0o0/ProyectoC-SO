@@ -11,7 +11,7 @@ int execute_command(char **args) {
     if (strcmp(args[0], "exit") == 0) {
         handle_exit(args); // Maneja el comando 'exit'
     } else if (strcmp(args[0], "help") == 0) {
-        handle_help(); // Maneja el comando 'help'
+        handle_help(args); // Maneja el comando 'help'
     } else if (strcmp(args[0], "pid") == 0) {
         handle_getpid(); // Maneja el comando 'pid'
     } else if (strcmp(args[0], "uid") == 0) {

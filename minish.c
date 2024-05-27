@@ -18,6 +18,7 @@ int main() {
 
     // Ciclo principal del shell
     do {
+        show_prompt(); // Mostrar el prompt
         printf("minish> "); // Prompt del shell
         if (fgets(line, sizeof(line), stdin) == NULL) {
             perror("fgets");
@@ -31,4 +32,26 @@ int main() {
     // Guardar el historial en el archivo antes de salir
     save_history();
     return status;
+}
+void show_prompt() {
+    char cwd[1024];
+    struct passwd *pw;
+    uid_t uid;
+    
+    // Obtener el directorio actual
+    if (getcwd(cwd, sizeof(cwd)) == NULL) {
+        perror("getcwd");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Obtener el nombre del usuario
+    uid = geteuid();
+    pw = getpwuid(uid);
+    if (pw == NULL) {
+        perror("getpwuid");
+        exit(EXIT_FAILURE);
+    }
+
+    // Mostrar el prompt
+    printf("(minish) %s:%s > ", pw->pw_name, cwd);
 }

@@ -15,10 +15,11 @@
 #define MAX_HISTORY 100
 
 void read_command(char *line);
+void show_prompt();
 void linea2argv(char *line, char **args);
 int execute_command(char **args);
 void handle_exit(char **args);
-void handle_help();
+void handle_help(char **args);
 void handle_getpid();
 void handle_getuid();
 void handle_getgid();

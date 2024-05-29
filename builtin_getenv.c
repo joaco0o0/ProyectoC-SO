@@ -1,23 +1,24 @@
 #include "minish.h"
 extern char **environ;
-void handle_getenv(char **args) {
+int builtin_getenv(int argc,char **argv) {
     // Si no se especifican argumentos, se muestran todas las variables de entorno
-    if (args[1] == NULL) { 
+    if (argv[1] == NULL) { 
         char **env = environ;
         while (*env != NULL) {
             printf("%s\n", *env);
             env++;
         } 
         
-        return;
+        return 0;
     }
 
-    for (int i = 1; args[i] != NULL; i++) {
-        char *value = getenv(args[i]);
+    for (int i = 1; argv[i] != NULL; i++) {
+        char *value = getenv(argv[i]);
         if (value != NULL) {
-            printf("%s=%s\n", args[i], value);
+            printf("%s=%s\n", argv[i], value);
         } else {
-            printf("%s no está definido\n", args[i]);
+            printf("%s no está definido\n", argv[i]);
         }
     }
+    return 0;
 }

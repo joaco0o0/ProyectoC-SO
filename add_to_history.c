@@ -10,12 +10,15 @@
 // Función para agregar un comando al historial
 void add_to_history(const char *cmd) {
     if (history_count < MAX_HISTORY) {
-        history[history_count++] = strdup(cmd);
+        history[history_count++] = strdup(cmd); // Agregar comando al historial
     } else {
         free(history[0]); // Liberar el comando más antiguo
-        for (int i = 1; i < MAX_HISTORY; i++) {
+        for (int i = 1; i < history_count; i++) {
             history[i - 1] = history[i]; // Desplazar comandos
         }
-        history[MAX_HISTORY - 1] = strdup(cmd);
+        if (history[MAX_HISTORY - 1] != NULL) {
+            free(history[MAX_HISTORY - 1]); // Liberar el comando más antiguo si no es nulo
+        }
+        history[MAX_HISTORY - 1] = strdup(cmd); // Agregar comando al historial
     }
 }

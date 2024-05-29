@@ -1,6 +1,6 @@
 #include "minish.h"
 
-void handle_getgid() {
+int builtin_getgid(int argc, char **argv) {
     gid_t gid = getgid();
     printf("GID principal: %d\n", gid);
     printf("GIDs secundarios: ");
@@ -19,4 +19,5 @@ void handle_getgid() {
         }
     }
     printf("\n");
+    return 0;
 }

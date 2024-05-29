@@ -7,10 +7,10 @@
 #define HISTORY_FILE ".minish_history"
 
 // Función para manejar el comando 'history'
-void handle_history(char **args) {
+int builtin_history(int argc,char **argv) {
     int num = 10; // Número predeterminado de comandos a mostrar
-    if (args[1] != NULL) {
-        num = atoi(args[1]);
+    if (argv[1] != NULL) {
+        num = atoi(argv[1]);
     }
     if (num > history_count) {
         num = history_count;
@@ -19,4 +19,5 @@ void handle_history(char **args) {
     for (int i = history_count - num; i < history_count; i++) {
         printf("%d %s\n", i + 1, history[i]);
     }
+    return 0;
 }

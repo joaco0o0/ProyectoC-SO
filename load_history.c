@@ -27,7 +27,7 @@ void load_history() {
     char line[MAX_INPUT];
     while (fgets(line, sizeof(line), file) != NULL) {
         read_command(line); // Eliminar el carácter de nueva línea
-        history[history_count] = strdup(line); // Guardar el comando en el historial
+        history[history_count] = line; // Guardar el comando en el historial
         history_count++;
     }
 

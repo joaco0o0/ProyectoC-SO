@@ -2,19 +2,19 @@
 
 static char prev_dir[MAX_INPUT]; // Directorio anterior
 
-void handle_cd(char **args) {
+int builtin_cd(int argc,char **argv) {
     char *dir;
     char cwd[MAX_INPUT];
 
     // Si no hay argumentos o el argumento es "~", cambia al directorio HOME
-    if (args[1] == NULL || strcmp(args[1], "~") == 0) {
+    if (argv[1] == NULL || strcmp(argv[1], "~") == 0) {
         dir = getenv("HOME");
-    } else if (strcmp(args[1], "-") == 0) {
+    } else if (strcmp(argv[1], "-") == 0) {
         // Cambia al directorio anterior
         dir = prev_dir;
     } else {
         // Cambia al directorio especificado
-        dir = args[1];
+        dir = argv[1];
     }
 
     // Obtiene el directorio actual antes de cambiar
@@ -31,4 +31,5 @@ void handle_cd(char **args) {
             setenv("PWD", cwd, 1);
         }
     }
+    return 0;
 }

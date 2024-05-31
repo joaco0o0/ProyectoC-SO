@@ -1,6 +1,8 @@
 #include "minish.h"
 
 int builtin_getuid(int argc,char **argv) {
+    (void)argc;
+    (void)argv;
     uid_t uid = getuid();
     struct passwd *pw = getpwuid(uid);
     if (pw != NULL) {

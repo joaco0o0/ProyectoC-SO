@@ -10,7 +10,7 @@
 #include <errno.h>
 
 #define MAX_INPUT 1024
-#define MAX_argv 64
+#define MAX_ARGV 64
 #define DELIM " \t\r\n\a"
 #define MAX_HISTORY 15
 
@@ -23,7 +23,7 @@ extern struct builtin_struct builtin_arr[];               // array que almacena 
 extern struct builtin_struct * builtin_lookup(char *cmd); // la función que busca un builtin por su nombre 
 void read_command(char *line);
 void show_prompt();
-int linea2argv(char *line, int argc,char **argv);
+int linea2argv(char *line,int argc,char **argv); //sacar el asterisco
 int ejecutar(int argc,char **argv);
 int builtin_exit(int argc,char **argv);
 int builtin_help(int argc,char **argv);
@@ -43,7 +43,7 @@ extern int history_count;
 
 void load_history();
 void save_history();
-void add_to_history(const char *cmd);
-
+void add_to_history(char *cmd);
+void free_argv(int argc,char **argv);
 
 #endif // MINISH_H

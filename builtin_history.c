@@ -9,6 +9,7 @@
 // Función para manejar el comando 'history'
 int builtin_history(int argc,char **argv) {
     int num = 10; // Número predeterminado de comandos a mostrar
+    (void)argc;
     if (argv[1] != NULL) {
         num = atoi(argv[1]);
     }

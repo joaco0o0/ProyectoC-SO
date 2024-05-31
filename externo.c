@@ -4,6 +4,7 @@
 #include <sys/wait.h>
 #include "minish.h"
 int externo(int argc, char **argv){
+    (void)argc;
     pid_t pid; //Es un entero que identifica de manera única un proceso en el sistema operativo
     int status;
 

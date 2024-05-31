@@ -1,6 +1,7 @@
 #include "minish.h"
 
 int builtin_setenv(int argc,char **argv) {
+    (void)argc;  
     if (argv[1] == NULL || argv[2] == NULL) {
         fprintf(stderr, "Uso: setenv variable valor\n");
         return 0 ;

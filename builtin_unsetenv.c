@@ -1,6 +1,7 @@
 #include "minish.h"
 
 int builtin_unsetenv(int argc,char **argv) {
+    (void)argc;
     if (argv[1] == NULL) {
         fprintf(stderr, "Uso: unsetenv variable [variable ...]\n");
         return 0 ;

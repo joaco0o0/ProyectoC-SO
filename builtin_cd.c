@@ -5,6 +5,7 @@ static char prev_dir[MAX_INPUT]; // Directorio anterior
 int builtin_cd(int argc,char **argv) {
     char *dir;
     char cwd[MAX_INPUT];
+    (void)argc;
 
     // Si no hay argumentos o el argumento es "~", cambia al directorio HOME
     if (argv[1] == NULL || strcmp(argv[1], "~") == 0) {

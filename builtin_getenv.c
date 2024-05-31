@@ -1,6 +1,7 @@
 #include "minish.h"
 extern char **environ;
 int builtin_getenv(int argc,char **argv) {
+    (void)argc;
     // Si no se especifican argumentos, se muestran todas las variables de entorno
     if (argv[1] == NULL) { 
         char **env = environ;

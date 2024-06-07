@@ -19,10 +19,12 @@ int linea2argv(char *linea, int argc, char **argv) {
         // Asigna memoria y guarda el argumento.
         if (argv[narg] != NULL) {
             free(argv[narg]);
+            argv[narg] = NULL;
         }
         argv[narg] = strdup(token);
 
         token = strtok(NULL, DELIM);
+        
     }
     
 

@@ -25,7 +25,7 @@ int builtin_cd(int argc,char **argv) {
 
     // Cambia al directorio especificado
     if (chdir(dir) != 0) {
-        perror("cd");
+        error(EXIT_FAILURE,errno,"error en el directorio");;
     } else {
         // Actualiza la variable de entorno PWD
         if (getcwd(cwd, sizeof(cwd)) != NULL) {

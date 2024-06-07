@@ -10,19 +10,19 @@ int externo(int argc, char **argv){
 
     pid = fork();
     if (pid < 0) {
-        perror("fork error");
+        error(EXIT_FAILURE,errno,"error en fork");
         return -1; // Indica error en el fork
     }
     if (pid == 0) {
         // En el proceso hijo
         if (execvp(argv[0], argv) == -1) {
-            perror("execvp error");
+            error(EXIT_FAILURE,errno,"error en execvp");
             exit(EXIT_FAILURE);
         }
     } else {
         // En el proceso padre
         if (waitpid(pid, &status, 0) == -1) {
-            perror("waitpid error");
+            error(EXIT_FAILURE,errno,"error en wait");
             return -1; // Indicar error en waitpid
         }
         if (WIFEXITED(status)) {

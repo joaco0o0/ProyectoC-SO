@@ -11,6 +11,7 @@
 void add_to_history(char *cmd) {
     if (history_count < MAX_HISTORY) {
         history[history_count++] = strdup(cmd); // Agregar comando al historial
+        
     } else {
         free(history[0]); // Liberar el comando más antiguo
         for (int i = 1; i < history_count; i++) {

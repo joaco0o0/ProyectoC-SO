@@ -12,7 +12,7 @@
 void load_history() {
     char *home = getenv("HOME");
     if (home == NULL) {
-        perror("getenv");
+        error(EXIT_FAILURE,errno,"error en getenv");;
         return;
     }
 

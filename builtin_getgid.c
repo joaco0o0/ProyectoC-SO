@@ -4,6 +4,7 @@ int builtin_getgid(int argc, char **argv) {
     (void)argc;
     (void)argv;
     gid_t gid = getgid();
+    //la funcion getgid nunca resulta en error
     printf("GID principal: %d\n", gid);
     printf("GIDs secundarios: ");
     
@@ -17,7 +18,7 @@ int builtin_getgid(int argc, char **argv) {
             }
             free(groups);
         } else {
-            perror("malloc");
+            error(EXIT_FAILURE,errno,"error en malloc");;
         }
     }
     printf("\n");

@@ -8,6 +8,9 @@
 #include <sys/types.h>
 #include <pwd.h>
 #include <errno.h>
+#include <error.h>
+#include <signal.h>
+
 
 #define MAX_INPUT 1024
 #define MAX_ARGV 64
@@ -34,6 +37,7 @@ int builtin_getenv(int argc, char **argv);
 int builtin_setenv(int argc, char **argv);
 int builtin_unsetenv(int argc, char **argv);
 int builtin_cd(int argc, char **argv);
+int builtin_dir(int argc, char **argv);
 int builtin_status(int argc, char **argv); 
 int builtin_history(int argc, char **argv);
 int externo(int argc,char **argv);

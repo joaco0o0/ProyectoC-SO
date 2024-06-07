@@ -1,7 +1,7 @@
 #include "minish.h"
 
 struct builtin_struct builtin_arr[]= {
-    {"exit", builtin_exit, "exit [N] - termina el shell, admite un parámetro que es el status de retorno."},
+    {"exit", builtin_exit, "exit - termina el shell, admite un parámetro que es el status de retorno."},
     {"pid", builtin_getpid, "pid - muestra el process id del shell."},
     {"uid", builtin_getuid, "uid - muestra el userid como número y también el nombre de usuario."},
     {"gid", builtin_getgid, "gid - muestra el grupo principal y los grupos secundarios del usuario."},
@@ -12,6 +12,7 @@ struct builtin_struct builtin_arr[]= {
     {"status", builtin_status, "status - muestra el status de retorno del último comando ejecutado."},
     {"help", builtin_help, "help [comando] - escribe una ayuda para los comandos."},
     {"history", builtin_history, "history [N] - muestra los 10 comandos anteriores."},
+    {"dir", builtin_dir, "dir [dir] - Muestra el contenido del directorio actual o del directorio indicado."},
     {NULL, NULL, NULL}, // Marca el final del array
 };
 

@@ -3,6 +3,8 @@
         "string.h": "c",
         "builtin.h": "c",
         "unistd.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "minish.h": "c",
+        "builtin_dir": "c"
     }
 }

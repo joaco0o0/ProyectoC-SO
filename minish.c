@@ -32,13 +32,9 @@ int main() {
         show_prompt(); // Mostrar el prompt
         
         if (fgets(line, sizeof(line), stdin) == NULL) { 
-            error(EXIT_FAILURE,errno,"error en la lectura");
+            error(EXIT_FAILURE,errno,"se pulso control D");
             save_history(); // Guardar el historial en el archivo antes de salir
-            if (feof(stdin)) {
-                break;      // normal EOF, break loop
-            } else {
-                continue;   // not EOF, read system call was interrupted, continue loop
-            }
+            
         }
      
 

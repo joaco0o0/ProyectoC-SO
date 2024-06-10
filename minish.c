@@ -21,7 +21,7 @@ int main() {
     char line[MAX_INPUT];
     int argc=MAX_ARGV;
     char *argv[MAX_ARGV]={NULL};
-    int status;
+    
     signal(SIGINT, sigint_handler);    
 
    
@@ -36,13 +36,13 @@ int main() {
             save_history(); // Guardar el historial en el archivo antes de salir
             
         }
-     
 
-        add_to_history(line); // Agregar el comando al historial
+        
         
         linea2argv(line,argc,argv); // Convierte la línea de entrada en una lista de argumentos
         
         status = ejecutar(argc,argv); // Ejecuta el comando ingresado por el usuario
+        
         // Liberar la memoria asignada a los argumentos
         for (int i = 0; i < argc && argv[i] != NULL; i++) {
             free(argv[i]);
@@ -54,6 +54,7 @@ int main() {
 }
     
 void sigint_handler(int sig){
+    (void) sig;
     printf("\n");
     show_prompt();
     fflush(stdout);

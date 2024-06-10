@@ -28,10 +28,15 @@ int externo(int argc, char **argv){
             return -1; // Indicar error en waitpid
         }
         if (WIFEXITED(status)) {
-            return WEXITSTATUS(status); // Retornar el estado de retorno del comando
+            int exitStatus = WEXITSTATUS(status);
+            if (exitStatus == 0) {
+                add_to_history(argv[0]); // Agregar el comando al historial                
+                return exitStatus; // Indicar que el proceso terminó normalmente
+            }
+            
         } else {
             return -1; // Indicar que el proceso no terminó normalmente
         }
     }
-    return 0; // Valor de retorno en caso de éxito
+   return 0;
 }

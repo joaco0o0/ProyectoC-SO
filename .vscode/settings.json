@@ -5,6 +5,7 @@
         "unistd.h": "c",
         "stdlib.h": "c",
         "minish.h": "c",
-        "builtin_dir": "c"
+        "builtin_dir": "c",
+        "stdio.h": "c"
     }
 }

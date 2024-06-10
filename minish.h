@@ -15,7 +15,7 @@
 #define MAX_INPUT 1024
 #define MAX_ARGV 64
 #define DELIM " \t\r\n\a"
-#define MAX_HISTORY 15
+#define MAX_HISTORY 10
 
 struct builtin_struct { 
 char *cmd;                           // nombre del comando interno

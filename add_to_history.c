@@ -4,21 +4,22 @@
 #include <unistd.h>
 #include "minish.h"
 
-#define HISTORY_FILE ".minish_history"
+#define HISTORY_FILE "minish_history.txt"
 
 
 // Función para agregar un comando al historial
 void add_to_history(char *cmd) {
+    
     if (history_count < MAX_HISTORY) {
         history[history_count++] = strdup(cmd); // Agregar comando al historial
-        
+
     } else {
-        free(history[0]); // Liberar el comando más antiguo
+        if (history[0] != NULL){
+            free(history[0]); // Liberar el comando más antiguo
+        }
+        
         for (int i = 1; i < history_count; i++) {
             history[i - 1] = history[i]; // Desplazar comandos
-        }
-        if (history[MAX_HISTORY - 1] != NULL) {
-            free(history[MAX_HISTORY - 1]); // Liberar el comando más antiguo si no es nulo
         }
         history[MAX_HISTORY - 1] = strdup(cmd); // Agregar comando al historial
     }

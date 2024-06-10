@@ -10,10 +10,9 @@ int ejecutar(int argc,char **argv) {
     // Comparación de comandos internos
     struct builtin_struct *builtin = builtin_lookup(argv[0]);
     if (builtin != NULL) {
+        add_to_history(argv[0]); // Agregar el comando al historial
         return builtin->func(argc,argv);
     }
     
-    
     return externo(argc,argv);
-    
-}
+}    

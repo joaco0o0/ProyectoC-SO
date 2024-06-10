@@ -1,4 +1,5 @@
 #include "minish.h"
+#include <ctype.h>
 
 
 
@@ -13,6 +14,7 @@ void load_history();
 void save_history();
 void add_to_history(char *cmd);
 void sigint_handler(int sig);
+int is_blank(const char *str);
 
 
 
@@ -21,6 +23,7 @@ int main() {
     char line[MAX_INPUT];
     int argc=MAX_ARGV;
     char *argv[MAX_ARGV]={NULL};
+    
     
     signal(SIGINT, sigint_handler);    
 
@@ -36,6 +39,16 @@ int main() {
             save_history(); // Guardar el historial en el archivo antes de salir
             
         }
+        
+
+        // Dentro del bucle principal
+        if (is_blank(line)) {
+            continue; // Saltar al siguiente ciclo si la línea contiene solo espacios
+        }
+
+
+
+
 
         
         
@@ -82,6 +95,15 @@ void show_prompt() {
 
     // Mostrar el prompt
     printf("(minish) %s:%s > ", pw->pw_name, cwd);
+}
+int is_blank(const char *str) {
+    while (*str != '\0') {
+        if (!isspace(*str)) {
+            return 0; // No está vacío
+        }
+        str++;
+    }
+    return 1; // Está vacío (solo contiene espacios)
 }
 
 

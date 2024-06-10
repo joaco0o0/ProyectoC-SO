@@ -1,80 +1,95 @@
-#include <sys/stat.h>
-#include <dirent.h>
-#include <time.h>
-#include <pwd.h>
-#include <grp.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <dirent.h>
+#include <sys/stat.h>
 #include <string.h>
 #include <errno.h>
+#include <pwd.h>
+#include <grp.h>
+#include <time.h>
 #include <error.h>
 
-// Función para simular el comando 'ls -l'
-int builtin_dir(int argc,char **args) {
-    (void) argc;
-    struct dirent *entry;  // Estructura para entrada de directorio
-    struct stat statbuf;   // Estructura para información de estado del archivo
-    DIR *dp;               // Puntero a la estructura del directorio
-    char *dir;             // Dirección del directorio a listar
-    
+#define MAX_FILES 1000
 
-    // Verificar si se pasó un argumento para listar un directorio específico o un patrón
-    if (args[1]) {
-        dir = args[1];
-    } else {
-        dir = ".";  // Directorio actual por defecto
-    }
+// Estructura para almacenar información sobre cada archivo
+struct FileInfo {
+    char *name;
+    struct stat statbuf;
+};
+
+// Función para comparar dos estructuras FileInfo y ordenarlas alfabéticamente por nombre de archivo
+int compare_fileinfo(const void *a, const void *b) {
+    return strcmp(((struct FileInfo *)a)->name, ((struct FileInfo *)b)->name);
+}
+
+// Función principal para simular el comando 'dir'
+int builtin_dir(int argc, char **argv) {
+    (void)argc;
+    (void)argv;
+
+    char *dir = "."; // Directorio actual por defecto
 
     // Abrir el directorio
-    dp = opendir(dir);
+    DIR *dp = opendir(dir);
     if (dp == NULL) {
-        error(0, errno, "No se pudo abrir el repositorio %s", dir);  // Manejo de error al abrir el directorio
-        
+        error(0, errno, "No se pudo abrir el directorio %s", dir);
+        return 1;
     }
 
-    // Leer entradas en el directorio
-    while ((entry = readdir(dp)) != NULL) {
+    // Almacenar información de archivo en un array de estructuras FileInfo
+    struct FileInfo files[MAX_FILES];
+    int file_count = 0;
+    struct dirent *entry;
+    while ((entry = readdir(dp)) != NULL && file_count < MAX_FILES) {
         char path[1024];
-        sprintf(path, "%s/%s", dir, entry->d_name);  // Construir ruta completa al archivo
+        snprintf(path, sizeof(path), "%s/%s", dir, entry->d_name);
 
-        // Obtener información de estado del archivo
-        if (stat(path, &statbuf) == -1) {
-            error(0, errno, "No se pudo obtener la información del estado del archivo %s", path);  // Manejo de error al obtener información del archivo
+        // Obtener información de estado del archivo y almacenarla en la estructura FileInfo
+        if (stat(path, &files[file_count].statbuf) == -1) {
+            error(0, errno, "No se pudo obtener la información del archivo %s", path);
             continue;
         }
 
-        // Imprimir tipo de archivo y permisos
-        printf("%10.10s", S_ISDIR(statbuf.st_mode) ? "d" : "-");
-        printf("%c%c%c%c%c%c%c%c%c ",
-               (statbuf.st_mode & S_IRUSR) ? 'r' : '-',
-               (statbuf.st_mode & S_IWUSR) ? 'w' : '-',
-               (statbuf.st_mode & S_IXUSR) ? 'x' : '-',
-               (statbuf.st_mode & S_IRGRP) ? 'r' : '-',
-               (statbuf.st_mode & S_IWGRP) ? 'w' : '-',
-               (statbuf.st_mode & S_IXGRP) ? 'x' : '-',
-               (statbuf.st_mode & S_IROTH) ? 'r' : '-',
-               (statbuf.st_mode & S_IWOTH) ? 'w' : '-',
-               (statbuf.st_mode & S_IXOTH) ? 'x' : '-');
-        
-        // Imprimir cantidad de links
-        printf(" %ld", statbuf.st_nlink);
-        
-        // Obtener y imprimir nombre de usuario y grupo del propietario
-        struct passwd *pwd = getpwuid(statbuf.st_uid);
-        struct group  *grp = getgrgid(statbuf.st_gid);
-        printf(" %s %s", pwd->pw_name, grp->gr_name);
-        
-        // Imprimir tamaño del archivo
-        printf(" %5ld", statbuf.st_size);
-        
-        // Imprimir fecha de última modificación
+        // Almacenar el nombre del archivo en la estructura FileInfo
+        files[file_count].name = strdup(entry->d_name);
+        file_count++;
+    }
+    closedir(dp);
+
+    // Ordenar el array de archivos alfabéticamente utilizando qsort y la función de comparación compare_fileinfo
+    qsort(files, file_count, sizeof(struct FileInfo), compare_fileinfo);
+
+    // Imprimir detalles de archivo ordenados
+    for (int i = 0; i < file_count; i++) {
+        struct FileInfo *fileinfo = &files[i];
+        struct stat *statbuf = &fileinfo->statbuf;
+
+        // Imprimir los detalles de cada archivo formateados
+        printf("%10.10s", S_ISDIR(statbuf->st_mode) ? "d" : "-"); // Tipo de archivo
+        printf("%c%c%c%c%c%c%c%c%c ", (statbuf->st_mode & S_IRUSR) ? 'r' : '-', // Permisos de usuario
+               (statbuf->st_mode & S_IWUSR) ? 'w' : '-',
+               (statbuf->st_mode & S_IXUSR) ? 'x' : '-',
+               (statbuf->st_mode & S_IRGRP) ? 'r' : '-', // Permisos de grupo
+               (statbuf->st_mode & S_IWGRP) ? 'w' : '-',
+               (statbuf->st_mode & S_IXGRP) ? 'x' : '-',
+               (statbuf->st_mode & S_IROTH) ? 'r' : '-', // Permisos de otros
+               (statbuf->st_mode & S_IWOTH) ? 'w' : '-',
+               (statbuf->st_mode & S_IXOTH) ? 'x' : '-');
+        printf(" %ld", statbuf->st_nlink); // Número de enlaces
+
+        struct passwd *pwd = getpwuid(statbuf->st_uid); // Obtener información del usuario propietario
+        struct group *grp = getgrgid(statbuf->st_gid);  // Obtener información del grupo propietario
+        printf(" %s %s", pwd->pw_name, grp->gr_name);   // Nombre de usuario y grupo
+        printf(" %5ld", statbuf->st_size);              // Tamaño del archivo
+
         char timebuf[80];
-        strftime(timebuf, sizeof(timebuf), "%b %d %H:%M", localtime(&statbuf.st_mtime));
-        printf(" %s", timebuf);
-        
-        // Imprimir nombre del archivo
-        printf(" %s\n", entry->d_name);
+        strftime(timebuf, sizeof(timebuf), "%b %d %H:%M", localtime(&statbuf->st_mtime)); // Formatear la fecha de modificación
+        printf(" %s", timebuf); // Fecha de modificación
+
+        printf(" %s\n", fileinfo->name); // Nombre del archivo
+
+        free(fileinfo->name); // Liberar la memoria asignada al nombre del archivo
     }
 
-    closedir(dp);  // Cerrar el directorio
     return 0;
 }

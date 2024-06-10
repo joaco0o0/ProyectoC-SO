@@ -13,6 +13,7 @@ struct builtin_struct builtin_arr[] = {
     {"status", builtin_status, "status - muestra el status de retorno del último comando ejecutado."},
     {"help", builtin_help, "help [comando] - escribe una ayuda para los comandos."},
     {"history", builtin_history, "history [N] - muestra los 10 comandos anteriores."},
+    {"dir", builtin_dir, "ir [directorio] - muestra el contenido del directorio actual o del directorio proporcionado." },
     {NULL, NULL, NULL}, // Marca el final del array
 };
 

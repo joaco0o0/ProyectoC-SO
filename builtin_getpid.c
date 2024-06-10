@@ -1,8 +1,10 @@
-#include "minish.h"
+#include "minish.h" // Incluye el archivo de cabecera "minish.h"
 
-int builtin_getpid(int argc,char **argv) {
-    (void)argc;
-    (void)argv;
-    printf("PID del shell: %d\n", getpid()); //nunca falla la funcion getpid
-    return 0;
+int builtin_getpid(int argc, char **argv) {
+    (void)argc; // Indicamos que 'argc' no se usa para evitar advertencias del compilador
+    (void)argv; // Indicamos que 'argv' no se usa para evitar advertencias del compilador
+    
+    printf("PID del shell: %d\n", getpid()); // Imprime el PID (ID de proceso) del shell actual
+    
+    return 0; // Retorna 0 indicando éxito
 }

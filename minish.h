@@ -10,7 +10,7 @@
 #include <errno.h>
 #include <error.h>
 #include <signal.h>
-
+#include <sys/wait.h>
 
 #define MAX_INPUT 1024
 #define MAX_ARGV 64

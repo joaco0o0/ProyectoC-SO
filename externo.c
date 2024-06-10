@@ -19,7 +19,9 @@ int externo(int argc, char **argv){
             error(EXIT_FAILURE,errno,"error en execvp");
             exit(EXIT_FAILURE);
         }
+        
     } else {
+        
         // En el proceso padre
         if (waitpid(pid, &status, 0) == -1) {
             error(EXIT_FAILURE,errno,"error en wait");
